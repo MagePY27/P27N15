@@ -6,7 +6,7 @@ from rest_framework.routers import DefaultRouter
 from .views import *
 
 # router = DefaultRouter()
-# #配置goods URL
+# 配置
 # router.register(r'hello', )
 
 app_name = 'hello'
