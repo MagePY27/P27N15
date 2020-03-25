@@ -153,3 +153,9 @@ REST_FRAMEWORK = {
     # "DEFAULT_PERMISSION_CLASSES": ["app_tools.framework_utils.SVIPPremission", ],
 }
 
+# local_settings
+try:
+    from . import local_settings
+except ImportError:
+    pass
+
