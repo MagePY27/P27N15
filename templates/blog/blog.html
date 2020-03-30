@@ -153,7 +153,7 @@
             var ret = "";
             {#result += "<a href='javascript:;' class='btn btn-xs green' οnclick=\"EditViewById('" + id + "', view='view')\" title='查看'><span class='glyphicon glyphicon-search'></span></a>";#}
             {#result += "<a href='javascript:;' class='btn btn-xs blue' οnclick=\"EditViewById('" + JSON.stringify(row) + "','" + id + "')\" title='编辑'><span class='glyphicon glyphicon-pencil'></span></a>";#}
-            ret += "<button title='详情-编辑' class='btn btn-sm btn-danger' onclick='doUpdate(" + id + ")'><i class='glyphicon glyphicon-pencil'>Edit</i></button>";
+            ret += "<button title='详情-编辑' class='btn btn-sm btn-default' onclick='doUpdate(" + id + ")'><i class='glyphicon glyphicon-pencil'>Edit</i></button>";
             {#result += "<button title='删除' class='btn btn-sm btn-danger' onclick='doDelete(" + data + ")'><i class='glyphicon glyphicon-remove'>Del</i></button>";#}
             ret += "<a href='javascript:;' class='btn btn-xs red' οnclick=\"DeleteByIds('" + id + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
             return ret;

@@ -146,31 +146,3 @@ class BlogCreateView(APIView):
         return HttpResponse(json.dumps(ret), content_type='application/json')
         # return Response(ret)
 
-# class IdcCreateView(APIView):
-#     """
-#     blog增加
-#     """
-#     def get(self, request):
-#         ret = dict(idc_all=IDC.objects.all())
-#         if 'id' in request.GET and request.GET['id']:
-#             idc = get_object_or_404(IDC, pk=request.GET['id'])
-#             ret['idc'] = idc
-#         return render(request, 'assets_idc_create.html', ret)
-#
-#     def post(self, request):
-#         idc_create_form = IdcCreateForm(request.POST)
-#         if idc_create_form.is_valid():
-#             new_idc = idc_create_form.save(commit=False)
-#             new_idc.save()
-#             idc_create_form.save()
-#             ret = {'status': 'success'}
-#         else:
-#             pattern = '<li>.*?<ul class=.*?><li>(.*?)</li>'
-#             errors = str(idc_create_form.errors)
-#             idc_create_form_errors = re.findall(pattern, errors)
-#             # print(idc_create_form_errors)
-#             ret = {
-#                 'status': 'fail',
-#                 'idc_create_form_errors': idc_create_form_errors[0]
-#             }
-#         return HttpResponse(json.dumps(ret), content_type='application/json')
