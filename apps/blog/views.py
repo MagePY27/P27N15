@@ -141,7 +141,7 @@ class BlogCreateView(APIView):
             create_form_errors = re.findall(pattern, errors)
             ret = {
                 'status': 'fail',
-                'idc_create_form_errors': create_form_errors[0]
+                'create_form_errors': create_form_errors[0]
             }
         return HttpResponse(json.dumps(ret), content_type='application/json')
         # return Response(ret)
