@@ -13,6 +13,7 @@ app_name = 'hello'
 
 urlpatterns = [
     # path('', include(router.urls)),
-    path('', IndexView.as_view(), name='index'),
-    path('hello/', IndexView.as_view(), name='hello-index'),
+    path('index/', IndexView.as_view(), name='index'),
+    path('hello/<int:year>/<int:month>/', HelloView.as_view(), name='hello'),
+    path('list/', HelloListView.as_view(), name='list'),
 ]

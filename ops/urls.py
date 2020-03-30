@@ -20,7 +20,7 @@ from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('hello.urls', namespace='index')),
+    path('blog/', include('blog.urls', namespace='blog')),
     path('hello/', include('hello.urls', namespace='hello')),
 
     # drf文档，title自定义

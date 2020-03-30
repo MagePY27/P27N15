@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static '/js/layer/skin/layer.css' %}">
+{% endblock %}
+
+{% block main %}
+  <div class="box box-danger">
+        <form class="form-horizontal" id="addForm" method="post">
+            {% csrf_token %}
+            <input type="hidden" name='id' value="{{ blog.id }}"/>
+            <div class="box-body">
+                <fieldset>
+                    <legend>
+                        <h4>Blog信息</h4>
+                    </legend>
+                    <div class="form-group has-feedback">
+                        <label class="col-sm-2 control-label">Blog名称</label>
+                        <div class="col-sm-4">
+                            <input class="form-control" name="name" type="text" value="{{ blog.name }}"/>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-group has-feedback">
+                        <label class="col-sm-2 control-label">标签</label>
+                        <div class="col-sm-4">
+                            <input class="form-control" name="tagline" type="text" value="{{ blog.tagline }}"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="box-footer ">
+                <div class="row span7 text-center ">
+                    <button type="button" id="btnCancel" class="btn btn-default margin-right ">重置</button>
+                    <button type="button" id="btnSave" class="btn btn-info margin-right ">保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+        $("#btnSave").click(function () {
+            console.error("create")
+            var data = $("#addForm").serialize();
+            $.ajax({
+                type: $("#addForm").attr('method'),
+                url: "{% url 'blog:blog-base-create' %}",
+                data: data,
+                cache: false,
+                success: function (msg) {
+                    if (msg.status == 'success') {
+                        layer.alert('创建成功！', {icon: 1}, function (index) {
+                            parent.layer.closeAll(); //关闭所有弹窗
+                        });
+                    } else {
+                        layer.alert(msg.create_form_errors, {icon: 5});
+                    }
+                    return;
+                }
+            });
+        });
+
+
+        /*点取消刷新新页面*/
+        $("#btnCancel").click(function () {
+            console.error("cancel")
+            window.location.reload();
+        })
+    </script>
+
+{% endblock %}

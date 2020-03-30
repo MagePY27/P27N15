@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
+{% endblock %}
+
+{% block content %}
+
+    <!-- Main content -->
+    <section class="content-header">
+        <h1>
+            Blog信息
+            <small>Blog info</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/blog/base/"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">blog信息</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div id="devlist">
+            <div class="box box-primary"></div>
+            <div class="box-header">
+                <div class="pull-left">
+                <button type="button" id="btnCreate" class="btn btn-sm btn-primary">
+                    <i class="glyphicon glyphicon-plus"></i>新增
+                </button>
+                    </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="pull-right">
+                    <input id="search-keyword" placeholder="查询">
+                    <button id="search-button" class="btn btn-sm btn-success">
+                        <span class="glyphicon glyphicon-search"></span> 查询
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="mytab" class="table table-bordered table-striped table-hover"></table>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javasscripts %}
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+    <!-- Latest compiled and minified Locales -->
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <script type="text/javascript">
+        $('#mytab').bootstrapTable({
+            {#全部参数#}
+            //请求后台的URL（*）或者外部json文件，json内容若为json数组[{"id": 0,"name": "Item 0","price": "$0"},{"id": 1,"name": "Item 1","price": "$1"}]，
+            //且键的名字必须与下方columns的field值一样，同时sidePagination需要设置为client或者直接注释掉，这样前台才能读取到数据，且分页正常。
+            //当json文件内容为json对象时：{"total": 2,"rows": [{"id": 0,"name": "Item 0","price": "$0"},{"id": 1,"name": "Item 1","price": "$1"}]}，
+            //分页要写为server，但是server如果没有处理的话,会在第一页显示所有的数据，分页插件不会起作用
+            {#url: "{% static 'guchen_obj.json' %}",     #}
+
+            url: "/blog/base/list/",     //从后台获取数据时，可以是json数组，也可以是json对象
+            dataType: "json",
+            method: 'get',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            striped: true,                      //是否显示行间隔色
+            cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: true,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            {#queryParams: oTableInit.queryParams,//传递参数（*）#}
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）,数据为json数组时写client，json对象时（有total和rows时）这里要为server方式，写client列表无数据
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 2,                       //每页的记录行数（*）
+            pageList: [1, 2, 5, 100],        //可供选择的每页的行数（*）
+            search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+            showToggle: false,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                   //是否显示父子表
+            idField: 'id',          //指定主键
+            singleSelect: true,                //开启单选,想要获取被选中的行数据必须要有该参数
+
+            //得到查询的参数，会在url后面拼接，如：?rows=5&page=2&sortOrder=asc&search_kw=&_=1564105760651
+            queryParams: function (params) {
+                //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                var query_params = {
+                    rows: params.limit,                         //页面大小
+                    page: (params.offset / params.limit) + 1,   //页码
+                    sort: params.sort,      //排序列名
+                    sortOrder: params.order, //排位命令（desc，asc）
+
+                    //查询框中的参数传递给后台
+                    search_kw: $('#search-keyword').val(), // 请求时向服务端传递的参数
+                };
+                return query_params;
+            },
+
+            columns: [
+                {
+                    checkbox: true  //第一列显示复选框
+                },
+
+                {
+                    field: 'id',  //返回数据rows数组中的每个字典的键名与此处的field值要保持一致
+                    title: 'PK'
+                },
+                {
+                    field: 'name',
+                    title: '姓名'
+                },
+                {
+                    field: 'tagline',
+                    title: '标签'
+                },
+                {
+                    field: 'operate',
+                    title: '操作',
+                    width: 120,
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: actionFormatter,
+                },
+            ],
+
+            onLoadSuccess: function (data) {
+                {#获取行数据的状态#}
+                console.log('渲染数据完成后，打印所有数据')
+                console.log(data);
+                {#获取所有列表数据#}
+                var data = $("#mytab").bootstrapTable("getData");
+                console.log('已获取全部数据%s', data);
+            }
+
+        });
+
+
+        //操作栏的格式化,value代表当前单元格中的值，row代表当前行数据，index表示当前行的下标
+        function actionFormatter(value, row, index) {
+            var index = index
+            {#console.error(index)#}
+            var id =JSON.stringify(row.id);
+            {#console.error(id)#}
+            var data = JSON.stringify(row);
+            console.error(data)
+            var ret = "";
+            {#result += "<a href='javascript:;' class='btn btn-xs green' οnclick=\"EditViewById('" + id + "', view='view')\" title='查看'><span class='glyphicon glyphicon-search'></span></a>";#}
+            {#result += "<a href='javascript:;' class='btn btn-xs blue' οnclick=\"EditViewById('" + JSON.stringify(row) + "','" + id + "')\" title='编辑'><span class='glyphicon glyphicon-pencil'></span></a>";#}
+            ret += "<button title='详情-编辑' class='btn btn-sm btn-danger' onclick='doUpdate(" + id + ")'><i class='glyphicon glyphicon-pencil'>Edit</i></button>";
+            {#result += "<button title='删除' class='btn btn-sm btn-danger' onclick='doDelete(" + data + ")'><i class='glyphicon glyphicon-remove'>Del</i></button>";#}
+            ret += "<a href='javascript:;' class='btn btn-xs red' οnclick=\"DeleteByIds('" + id + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
+            return ret;
+
+        }
+
+        // 搜索查询按钮触发事件
+        $(function () {
+            $("#search-button").click(function () {
+                $('#mytab').bootstrapTable(('refresh')); // 很重要的一步，刷新url！
+                $('#search-keyword').val()
+            })
+        })
+
+        //重置搜索条件
+        function clean() {
+            //先清空
+            $('#search-keyword').val('');
+            //清空后查询条件为空了，再次刷新页面，就是全部数据了
+            $('#mytab').bootstrapTable(('refresh')); // 很重要的一步，刷新url！
+        }
+        // 新增
+        $("#btnCreate").click(function () {
+            layer.open({
+                type: 2,
+                title: '新增Blog',
+                shadeClose: false,
+                maxmin: true,
+                area: ['50%', '40%'],
+                content: "{% url 'blog:blog-base-create' %}",
+                end: function () {
+                    //新增内容，弹窗关闭后刷新oDatable
+                    window.location.reload();
+                }
+            });
+        });
+        // update
+        function doUpdate(id) {
+            var div = layer.open({
+                type: 2,
+                title: '编辑',
+                shadeClose: false,
+                maxmin: true,
+                area: ['50%', '50%'],
+                content: ["{% url 'blog:blog-base-create' %}" + '?id=' + id, 'no'],
+                end: function () {
+                    window.location.reload();
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

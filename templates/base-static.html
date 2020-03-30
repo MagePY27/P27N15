@@ -1,0 +1,42 @@
+{% load  staticfiles %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 2 | Starter</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="/static/plugins/layer/theme/default/layer.css">
+    {% block css %} {% endblock %}
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+    {% block main %}
+
+    {% endblock %}
+
+    <section class="content container-fluid">
+
+    </section>
+    <div class="control-sidebar-bg"></div>
+</div>
+
+<!-- jQuery 3 -->
+<script src="/static/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/js/layer/layer.js"></script>
+
+{% block javasscripts %} {% endblock %}
+
+</body>
+</html>

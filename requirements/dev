@@ -5,3 +5,6 @@ coreapi
 Markdown
 django-jsonfield
 djangorestframework-datatables
+paramiko
+dwebsocket
+django-filter

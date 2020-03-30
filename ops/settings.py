@@ -10,7 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-import os, sys
+import os
+import sys
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -41,6 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hello',
     'rest_framework',
+    'django_filters',
+    'ssh',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -83,8 +87,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ops',
         'HOST': '127.0.0.1',
-        'USER': 'nick',
-        'PASSWORD': 'Q!W@e3r4',
+        'USER': 'root',
+        'PASSWORD': 'root',
         'PORT': '3306'
     }
 }
@@ -155,7 +159,7 @@ REST_FRAMEWORK = {
 
 # local_settings
 try:
-    from . import local_settings
-except ImportError:
+    from .local_settings import *
+except:
     pass
 
