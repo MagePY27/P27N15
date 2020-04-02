@@ -1,0 +1,10 @@
+django==2.2.0
+mysqlclient
+djangorestframework
+coreapi
+Markdown
+django-jsonfield
+djangorestframework-datatables
+paramiko
+dwebsocket
+django-filter
