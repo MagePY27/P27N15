@@ -21,7 +21,7 @@ class HelloView(APIView):
 ```
 
 #### day2
-- 分页
+- 分页&搜索-bootstrap-table
 ```javascript
         var oDataTable = null;
 
