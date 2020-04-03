@@ -71,7 +71,7 @@ class UserProfile(AbstractUser):
 ##### 用户页面
 > 分页&搜索&下载
 > 基于bootstrap-table
-![image](https://github.com/MagePY27/P27N15/blob/master/img/user-table.pnghttps://github.com/MagePY27/P27N15/blob/master/img/user-table.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/user-table.png)
 
 - 前端
 ```javascript
@@ -420,7 +420,7 @@ class PasswordChangeForm(forms.Form):
 
 ```
 ##### 增
-![image](https://github.com/MagePY27/P27N15/blob/master/img/user-table.pnghttps://github.com/MagePY27/P27N15/blob/master/img/user-add.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/user-add.png)
 - views
 ```python
 class USerCreateView(APIView):
@@ -448,8 +448,8 @@ class USerCreateView(APIView):
         return Response(ret)
 ```
 ##### 改
-![image](https://github.com/MagePY27/P27N15/blob/master/img/user-table.pnghttps://github.com/MagePY27/P27N15/blob/master/img/user-update.png)
-![image](https://github.com/MagePY27/P27N15/blob/master/img/user-table.pnghttps://github.com/MagePY27/P27N15/blob/master/img/passwoord.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/user-update.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/passwoord.png)
 - views
 ```python
 class UserUpdateView(APIView):
@@ -502,7 +502,7 @@ class PasswordChangeView(APIView):
 ```
 
 ##### 删除 
-![image](https://github.com/MagePY27/P27N15/blob/master/img/user-table.pnghttps://github.com/MagePY27/P27N15/blob/master/img/user-del.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/user-del.png)
 
 - views
 ```python
