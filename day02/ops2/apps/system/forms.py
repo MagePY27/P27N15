@@ -59,3 +59,27 @@ class UserUpdateForm(forms.ModelForm):
         model = User
         fields = ['name', 'username', 'email', 'gender']
 
+
+class PasswordChangeForm(forms.Form):
+    password = forms.CharField(
+        required=True,
+        min_length=6,
+        max_length=20,
+        error_messages={
+            "required": u"密码不能为空"
+        })
+
+    confirm_password = forms.CharField(
+        required=True,
+        min_length=6,
+        max_length=20,
+        error_messages={
+            "required": u"确认密码不能为空"
+        })
+
+    def clean(self):
+        cleaned_data = super(PasswordChangeForm, self).clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+        if password != confirm_password:
+            raise forms.ValidationError("两次密码输入不一致")

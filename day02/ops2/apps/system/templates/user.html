@@ -32,7 +32,7 @@
                     <i class="glyphicon glyphicon-plus"></i>新增
                 </button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input id="search-keyword" placeholder="IP查询">
+                <input id="search-keyword" placeholder="name/email">
                 <button id="search-button" class="btn btn-sm btn-success">
                     <span class="glyphicon glyphicon-search"></span> 查询
                 </button>
@@ -154,7 +154,7 @@
                         {
                             field: 'operate',
                             title: '操作',
-                            width: 120,
+                            width: 200,
                             align: 'center',
                             valign: 'middle',
                             formatter: actionFormatter,
@@ -182,8 +182,9 @@
             var id = JSON.stringify(row.id);
             {#console.error(id)#}
             var ret = "";
-            ret += "<a href='javascript:;' class='btn btn-xs green' onclick=\"doUpdate(" + id + ")\" title='编辑'><span class='glyphicon glyphicon-pencil'>Edit</span></a>";
-            ret += "<a href='javascript:;' class='btn btn-xs btn-danger' onclick=\"doDelete(" + id + ")\" title='删除'><span class='glyphicon glyphicon-trash'>Del</span></a>";
+            ret += "<a href='javascript:;' class='btn btn-xs btn-info' onclick=\"doUpdate(" + id + ")\" title='编辑'><span class='glyphicon glyphicon-pencil'>修改</span></a>";
+            ret += "<a href='javascript:;' class='btn btn-xs btn-warning' onclick=\"doChangepasswd(" + id + ")\" title='修改密码'><span class='glyphicon glyphicon-user'>密码</span></a>";
+            ret += "<a href='javascript:;' class='btn btn-xs btn-danger' onclick=\"doDelete(" + id + ")\" title='删除'><span class='glyphicon glyphicon-trash'>删除</span></a>";
             return ret;
 
         }
@@ -260,6 +261,20 @@
                             return;
                         }
                     });
+                }
+            });
+        }
+
+        function doChangepasswd(id) {
+            layer.open({
+                type: 2,
+                title: '修改密码',
+                shadeClose: false,
+                maxmin: true,
+                area: ['50%', '50%'],
+                content: ["{% url 'system:user-update-password' %}" + '?id=' + id, 'no'],
+                end: function () {
+                    oDataTable.bootstrapTable('refresh')
                 }
             });
         }

@@ -121,3 +121,32 @@ class UserDeleteView(APIView):
             ret['result'] = True
         return Response(ret)
 
+
+class PasswordChangeView(APIView):
+
+    def get(self, request):
+        ret = dict()
+        if 'id' in request.GET and request.GET['id']:
+            user = get_object_or_404(User, pk=int(request.GET.get('id')))
+            ret['user'] = user
+        return render(request, 'user_passwod.html', ret)
+
+    def post(self, request):
+        from apps.system.forms import PasswordChangeForm
+        if 'id' in request.POST and request.POST['id']:
+            user = get_object_or_404(User, pk=int(request.POST['id']))
+            form = PasswordChangeForm(request.POST)
+            if form.is_valid():
+                new_password = request.POST['password']
+                user.set_password(new_password)
+                user.save()
+                ret = {'status': 'success'}
+            else:
+                pattern = '<li>.*?<ul class=.*?><li>(.*?)</li>'
+                errors = str(form.errors)
+                password_change_form_errors = re.findall(pattern, errors)
+                ret = {
+                    'status': 'fail',
+                    'password_change_form_errors': password_change_form_errors[0]
+                }
+        return Response(ret)
