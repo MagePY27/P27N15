@@ -449,7 +449,7 @@ class USerCreateView(APIView):
 ```
 ##### 改
 ![image](https://github.com/MagePY27/P27N15/blob/master/img/user-update.png)
-![image](https://github.com/MagePY27/P27N15/blob/master/img/passwoord.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/password.png)
 - views
 ```python
 class UserUpdateView(APIView):
