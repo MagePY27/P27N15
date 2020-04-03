@@ -1,4 +1,4 @@
-#### URL
+### URL
 ```python
 # urls
 path('hello/<int:year>/<int:month>/', HelloView.as_view(), name='hello'),
@@ -20,8 +20,60 @@ class HelloView(APIView):
         return Response('post')
 ```
 
-#### day2
-- 分页&搜索-bootstrap-table
+### day2
+#####  tamplates
+>  基于 AdminLte 2模板
+-  模板的继承关系 
+    -  base-static.html  （静态资源）
+        -  base-layer.html  (layer弹出)
+        -  head-footer.html 
+            -  base-left.html  （左部菜单）
+                - index.html   
+
+#####  用户表 
+> 扩展django的User model扩展类AbstractUser
+```python
+from django.contrib.auth.models import AbstractUser
+
+class UserProfile(AbstractUser):
+    name = models.CharField(max_length=20, default="", verbose_name="姓名")
+    gender = models.IntegerField(choices=((0, "男"), (1, "女")), default=0, verbose_name="性别")
+    email = models.EmailField(max_length=50, verbose_name="邮箱")
+
+    class Meta:
+        verbose_name = "用户信息"
+        verbose_name_plural = verbose_name
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+from django.contrib.auth.models import AbstractUser
+
+
+class UserProfile(AbstractUser):
+    name = models.CharField(max_length=20, default="", verbose_name="姓名")
+    gender = models.IntegerField(choices=((0, "男"), (1, "女")), default=0, verbose_name="性别")
+    email = models.EmailField(max_length=50, verbose_name="邮箱")
+
+    class Meta:
+        verbose_name = "用户信息"
+        verbose_name_plural = verbose_name
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
+
+
+
+```
+
+##### 用户页面
+> 分页&搜索&下载
+> 基于bootstrap-table
+![image](https://github.com/MagePY27/P27N15/blob/master/img/user-table.pnghttps://github.com/MagePY27/P27N15/blob/master/img/user-table.png)
+
+- 前端
 ```javascript
         var oDataTable = null;
 
@@ -172,7 +224,6 @@ class HelloView(APIView):
         }
 
 ```
-
 - views
 ```python
         search_kw = request.GET.get('search_kw', None)
@@ -199,3 +250,271 @@ class HelloView(APIView):
         return Response({'total': total, 'rows': row})
 ```
 
+#### 增删改 
+> layer & forms
+- 用户页面JS
+```javascript
+
+ $("#btnCreate").click(function () {
+            var div = layer.open({
+                type: 2,
+                title: '新增',
+                shadeClose: false,
+                maxmin: true,
+                area: ['50%', '50%'],
+                content: '/system/user/create/',
+                end: function () {
+                    //关闭时做的事情
+                    {#oDataTable.ajax.reload();#}
+                    oDataTable.bootstrapTable('refresh')
+                }
+            });
+        });
+
+        function doUpdate(id) {
+            var div = layer.open({
+                type: 2,
+                title: '编辑',
+                shadeClose: false,
+                maxmin: true,
+                area: ['50%', '50%'],
+                content: ["{% url 'system:user-update' %}" + '?id=' + id, 'no'],
+                end: function () {
+                    {#oDataTable.ajax.reload();#}
+                    oDataTable.bootstrapTable('refresh')
+                }
+            });
+        }
+
+        function doDelete(id) {
+            layer.alert('确定删除吗？', {
+                title: '提示'
+                , icon: 3 //0:感叹号 1：对号 2：差号 3：问号 4：小锁 5：哭脸 6：笑脸
+                , time: 0 //不自动关闭
+                , btn: ['YES', 'NO']
+                , yes: function (index) {
+                    layer.close(index);
+                    $.ajax({
+                        type: "POST",
+                        url: "{% url 'system:user-delete' %}",
+                        data: {"id": id, csrfmiddlewaretoken: '{{ csrf_token }}'},  //防止post数据时报 csrf_token 403
+                        cache: false,
+                        success: function (msg) {
+                            if (msg.result) {
+                                layer.alert('删除成功', {icon: 1});
+                                {#oDataTable.ajax.reload();#}
+                                oDataTable.bootstrapTable('refresh')
+                            } else {
+                                //alert(msg.message);
+                                layer.alert('删除失败', {icon: 2});
+                            }
+                            return;
+                        }
+                    });
+                }
+            });
+        }
+
+        function doChangepasswd(id) {
+            layer.open({
+                type: 2,
+                title: '修改密码',
+                shadeClose: false,
+                maxmin: true,
+                area: ['50%', '50%'],
+                content: ["{% url 'system:user-update-password' %}" + '?id=' + id, 'no'],
+                end: function () {
+                    oDataTable.bootstrapTable('refresh')
+                }
+            });
+        }
+
+```
+- forms验证 
+```python
+import re
+from django import forms
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class UserCreateForm(forms.ModelForm):
+    password = forms.CharField(
+        required=True,
+        min_length=6,
+        max_length=20,
+        error_messages={
+            "required": "密码不能为空",
+            "min_length": "密码长度最少6位数",
+        }
+    )
+
+    confirm_password = forms.CharField(
+        required=True,
+        min_length=6,
+        max_length=20,
+        error_messages={
+            "required": "确认密码不能为空",
+            "min_length": "密码长度最少6位数",
+        }
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            'name', 'username', 'password', 'email', 'gender'
+        ]
+
+        error_messages = {
+            "name": {"required": "姓名不能为空"},
+            "username": {"required": "用户名不能为空"},
+            "email": {"required": "邮箱不能为空"},
+        }
+
+    def clean(self):
+        cleaned_data = super(UserCreateForm, self).clean()
+        username = cleaned_data.get("username")
+        email = cleaned_data.get("email")
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if User.objects.filter(username=username).count():
+            raise forms.ValidationError('用户名：{}已存在'.format(username))
+
+        if password != confirm_password:
+            raise forms.ValidationError("两次密码输入不一致")
+
+        if User.objects.filter(email=email).count():
+            raise forms.ValidationError('邮箱：{}已存在'.format(email))
+
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['name', 'username', 'email', 'gender']
+
+
+class PasswordChangeForm(forms.Form):
+    password = forms.CharField(
+        required=True,
+        min_length=6,
+        max_length=20,
+        error_messages={
+            "required": u"密码不能为空"
+        })
+
+    confirm_password = forms.CharField(
+        required=True,
+        min_length=6,
+        max_length=20,
+        error_messages={
+            "required": u"确认密码不能为空"
+        })
+
+    def clean(self):
+        cleaned_data = super(PasswordChangeForm, self).clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+        if password != confirm_password:
+            raise forms.ValidationError("两次密码输入不一致")
+
+```
+##### 增
+![image](https://github.com/MagePY27/P27N15/blob/master/img/user-table.pnghttps://github.com/MagePY27/P27N15/blob/master/img/user-add.png)
+- views
+```python
+class USerCreateView(APIView):
+
+    def get(self,  request):
+        return render(request, 'user_create.html')
+
+    def post(self, request):
+        user_create_form = UserCreateForm(request.POST)
+        if user_create_form.is_valid():
+            new_user = user_create_form.save(commit=False)
+            new_user.password = make_password(user_create_form.cleaned_data['password'])
+            new_user.save()
+            ret = {'status': 'success'}
+        else:
+            pattern = '<li>.*?<ul class=.*?><li>(.*?)</li>'
+            errors = str(user_create_form.errors)
+            user_create_form_errors = re.findall(pattern, errors)
+            print(errors)
+            ret = {
+                'status': 'fail',
+                'user_create_form_errors': user_create_form_errors[0]
+            }
+
+        return Response(ret)
+```
+##### 改
+![image](https://github.com/MagePY27/P27N15/blob/master/img/user-table.pnghttps://github.com/MagePY27/P27N15/blob/master/img/user-update.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/user-table.pnghttps://github.com/MagePY27/P27N15/blob/master/img/passwoord.png)
+- views
+```python
+class UserUpdateView(APIView):
+    def get(self, request):
+        user = get_object_or_404(User, pk=int(request.GET['id']))
+        return render(request, 'user_update.html', locals())
+
+    def post(self, request):
+        if 'id' in request.POST and request.POST['id']:
+            user = get_object_or_404(User, pk=int(request.POST['id']))
+        else:
+            user = get_object_or_404(User, pk=int(request.user.id))
+        user_update_form = UserUpdateForm(request.POST, instance=user)
+        if user_update_form.is_valid():
+            user_update_form.save()
+            ret = {"status": "success"}
+        else:
+            ret = {"status": "fail", "message": user_update_form.errors}
+        return Response(ret)
+
+
+class PasswordChangeView(APIView):
+
+    def get(self, request):
+        ret = dict()
+        if 'id' in request.GET and request.GET['id']:
+            user = get_object_or_404(User, pk=int(request.GET.get('id')))
+            ret['user'] = user
+        return render(request, 'user_passwod.html', ret)
+
+    def post(self, request):
+        from apps.system.forms import PasswordChangeForm
+        if 'id' in request.POST and request.POST['id']:
+            user = get_object_or_404(User, pk=int(request.POST['id']))
+            form = PasswordChangeForm(request.POST)
+            if form.is_valid():
+                new_password = request.POST['password']
+                user.set_password(new_password)
+                user.save()
+                ret = {'status': 'success'}
+            else:
+                pattern = '<li>.*?<ul class=.*?><li>(.*?)</li>'
+                errors = str(form.errors)
+                password_change_form_errors = re.findall(pattern, errors)
+                ret = {
+                    'status': 'fail',
+                    'password_change_form_errors': password_change_form_errors[0]
+                }
+        return Response(ret)
+```
+
+##### 删除 
+![image](https://github.com/MagePY27/P27N15/blob/master/img/user-table.pnghttps://github.com/MagePY27/P27N15/blob/master/img/user-del.png)
+
+- views
+```python
+class UserDeleteView(APIView):
+    """
+    删除数据
+    """
+
+    def post(self, request):
+        ret = dict(result=False)
+        if 'id' in request.POST and request.POST['id']:
+            User.objects.filter(pk=request.POST['id']).delete()
+            ret['result'] = True
+        return Response(ret)
+```
