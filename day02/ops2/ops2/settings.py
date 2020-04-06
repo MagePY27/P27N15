@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'apps.system',
+    'apps.books'
 ]
 
 MIDDLEWARE = [
@@ -133,6 +134,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#  rest framework
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'utils.MyPageNumberPagination.MyPagePagination',
+    'EXCEPTION_HANDLER': 'utils.My_rest_exception.custom_exception_handler',
+}
 
 # local_settings
 try:
