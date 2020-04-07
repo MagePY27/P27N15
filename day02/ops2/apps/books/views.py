@@ -2,7 +2,7 @@ from apps.books.models import Publisher, Book, Author
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404, HttpResponse
 from utils.My_rest_viewset import MyViewBase
-from .serializer import BookSerializer, PublisherSerializer
+from .serializer import BookSerializer, PublisherSerializer, AuthorSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -42,7 +42,19 @@ class PublisherViewSet(MyViewBase):
     search_fields = ('name', 'address')
 
 
+# book
 
+class BookViewSet(MyViewBase):
+
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+
+# author
+class AuthorViewSet(MyViewBase):
+
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
 
 
 

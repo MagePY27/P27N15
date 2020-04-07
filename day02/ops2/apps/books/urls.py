@@ -4,6 +4,8 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'publisher_action', views.PublisherViewSet)
+router.register(r'author_action', views.AuthorViewSet)
+router.register(r'book_action', views.BookViewSet)
 
 
 app_name = 'books'
