@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from system.views import IndexView
+from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='index'),
     path('system/', include('system.urls', namespace='system')),
     path('books/', include('books.urls', namespace='books')),
+    # drf docs
+    path('docs/', include_docs_urls(title='接口文档'))
 ]

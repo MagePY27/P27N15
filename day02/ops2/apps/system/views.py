@@ -150,3 +150,5 @@ class PasswordChangeView(APIView):
                     'password_change_form_errors': password_change_form_errors[0]
                 }
         return Response(ret)
+
+

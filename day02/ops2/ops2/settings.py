@@ -137,6 +137,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #  rest framework
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'utils.MyPageNumberPagination.MyPagePagination',
     'EXCEPTION_HANDLER': 'utils.My_rest_exception.custom_exception_handler',
 }

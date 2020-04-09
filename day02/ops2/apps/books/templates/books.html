@@ -13,12 +13,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            出版社管理
-            <small>Publisher manage</small>
+            图书管理
+            <small>Authors manage</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active">出版社</li>
+            <li class="active">图书</li>
         </ol>
     </section>
 
@@ -39,18 +39,18 @@
                     </div>
                     <div class="row">
 
-                        <div class="col-md-2 col-sm-12 col-xs-12 form-group">
-                            <select class="form-control select2" id="selCity">
-                                <option selected="selected" value="">城市</option>
-                                {% for city in city_list %}
-                                    <option value="{{ city.city}}" name="model">{{ city.city }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
+{#                        <div class="col-md-2 col-sm-12 col-xs-12 form-group">#}
+{#                            <select class="form-control select2" id="selCity">#}
+{#                                <option selected="selected" value="">城市</option>#}
+{#                                {% for city in city_list %}#}
+{#                                    <option value="{{ city.city}}" name="model">{{ city.city }}</option>#}
+{#                                {% endfor %}#}
+{#                            </select>#}
+{#                        </div>#}
 
                         <div class="col-md-2 col-sm-12 col-xs-12 form-group">
                             <div class="form-inline">
-                            <input type="text" id="search-keyword" placeholder="名称/地址" class="form-control" value="">
+                            <input type="text" id="search-keyword" placeholder="名称" class="form-control" value="">
                             <button id="search-button" class="btn btn-sm btn-success">
                                 <span class="glyphicon glyphicon-search"></span> 查询
                             </button>
@@ -102,7 +102,7 @@
                     //分页要写为server，但是server如果没有处理的话,会在第一页显示所有的数据，分页插件不会起作用
                     {#url: "{% static 'guchen_obj.json' %}",     #}
 
-                    url: "/books/publisher_action/",     //从后台获取数据时，可以是json数组，也可以是json对象
+                    url: "/books/book_action/",     //从后台获取数据时，可以是json数组，也可以是json对象
                     dataType: "json",
                     method: 'get',                      //请求方式（*）
                     toolbar: '#toolbar',                //工具按钮用哪个容器
@@ -133,7 +133,7 @@
                     exportDataType: ['selected'],
                     {#exportTypes: ['json',  'pdf'], //导出类型#}
                     exportOptions: {//导出设置
-                        fileName: 'Table_User',//下载文件名称
+                        fileName: 'Table_author',//下载文件名称
                     },
 
 
@@ -148,7 +148,6 @@
 
                             //查询框中的参数传递给后台
                             search: $('#search-keyword').val(), // 请求时向服务端传递的参数
-                            city: $('#selCity').val(), // 请求时向服务端传递的参数
                         };
                         return query_params;
                     },
@@ -171,27 +170,23 @@
                             sortable: true
                         },
                         {
-                            field: 'name',
+                            field: 'title',
+                            title: '书名',
+                            sortable: true
+                        },
+                        {
+                            field: 'publisher',
                             title: '出版社',
                             sortable: true
                         },
                         {
-                            field: 'address',
-                            title: '地址 ',
-                            sortable: true
-                        },
-                        {
-                            field: 'city',
-                            title: '城市',
-                            sortable: true,
-                            formatter: function (value, row, index) {
-                                if (value === '上海') {
-                                    return '<span class="label label-success">' + value + '</span>';
-                                } else if (value === '南京') {
-                                    return '<span class="label label-primary">' + value + '</span>';
-                                }
-                                return '<span class="label label-warning">' + value + '</span>';
-                            }
+                            field: 'authors',
+                            title: '作者',
+                            {#formatter: function (value, row, index) {#}
+                            {#    for (var i = 0; i < value.length; i++) {#}
+                            {#        return value[i].name;#}
+                            {#    }#}
+                            {#}#}
                         },
                         {
                             field: 'operate',
@@ -253,7 +248,7 @@
                 shadeClose: false,
                 maxmin: true,
                 area: ['50%', '50%'],
-                content: "{% url 'books:books-publisher-create' %}",
+                content: "/books/books/create/",
                 end: function () {
                     //关闭时做的事情
                     {#oDataTable.ajax.reload();#}
@@ -269,7 +264,7 @@
                 shadeClose: false,
                 maxmin: true,
                 area: ['50%', '50%'],
-                content: ["{% url 'books:books-publisher-update' %}" + '?id=' + id, 'no'],
+                content: ["{% url 'books:books-author-update' %}" + '?id=' + id, 'no'],
                 end: function () {
                     {#oDataTable.ajax.reload();#}
                     oDataTable.bootstrapTable('refresh')
@@ -287,7 +282,7 @@
                     layer.close(index);
                     $.ajax({
                         type: "DELETE",
-                        url: "/books/publisher_action/"+id+"/",
+                        url: "/books/author_action/"+id+"/",
                         data: {"id": id, csrfmiddlewaretoken: '{{ csrf_token }}'},  //防止post数据时报 csrf_token 403
                         cache: false,
                         success: function (res) {

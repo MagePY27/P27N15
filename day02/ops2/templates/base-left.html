@@ -23,6 +23,18 @@
                             <li><a href="/system/user/">用户管理</a></li>
                         </ul>
                     </li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-book"></i> <span>Books</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                        <li %{ if(request.path =="/books/publisher/"){}% class="active"%{} }%><a href="/books/publisher/">出版社</a></li>
+                            <li><a href="/books/author/">作者</a></li>
+                            <li><a href="/books/books/">图书</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 <!-- /.sidebar-menu -->
         </section>

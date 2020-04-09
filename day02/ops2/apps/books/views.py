@@ -26,7 +26,6 @@ class PublishUpdateView(APIView):
     def get(self, request):
         if request.GET['id']:
             publisher = Publisher.objects.filter(id=request.GET['id']).first()
-            return render(request, 'publisher_update.html', locals())
 
         return render(request, 'publisher_update.html', locals())
 
@@ -42,7 +41,42 @@ class PublisherViewSet(MyViewBase):
     search_fields = ('name', 'address')
 
 
+# author
+class AuthorView(APIView):
+
+    def get(self, request):
+        return render(request, 'author.html')
+
+
+class AuthorViewSet(MyViewBase):
+
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+    # search
+    search_fields = ('name', 'email')
+
+
+class AuthorCrateView(APIView):
+
+    def get(self, request):
+        return render(request, 'author_create.html')
+
+
+class AuthorUpdateView(APIView):
+
+    def get(self, request):
+        if request.GET['id']:
+            author = Author.objects.filter(id=request.GET['id']).first()
+
+        return render(request, 'author_update.html', locals())
+
+
 # book
+class BooksView(APIView):
+
+    def get(self, request):
+        return render(request, 'books.html')
+
 
 class BookViewSet(MyViewBase):
 
@@ -50,11 +84,14 @@ class BookViewSet(MyViewBase):
     serializer_class = BookSerializer
 
 
-# author
-class AuthorViewSet(MyViewBase):
+class BookCreateView(APIView):
 
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+    def get(self, request):
+        pub_list = Publisher.objects.all()
+        author_list = Author.objects.all()
+        return render(request, 'books_create.html', locals())
+
+
 
 
 

@@ -55,27 +55,25 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class AuthorDisplaySerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = "name"
+
+
 class BookSerializer(serializers.ModelSerializer):
     title = serializers.CharField(label='书名', required=True, help_text='书名',
                                   error_messages={"required": "书名不能为空"
                                                   })
     # 显示外键
-    publisher = serializers.CharField(source='publisher.name')
-    # publishers = PublisherSerializer(many=True, read_only=True)
+    publisher = serializers.CharField(source='publisher.name', read_only=True)
     # many to many
-    authors = AuthorSerializer(many=True, read_only=True)
+    # authors = AuthorSerializer(many=True, read_only=True)
+    authors = serializers.StringRelatedField(many=True, read_only=True)
+    # authors = AuthorDisplaySerializers(many=True, read_only=True)
 
     class Meta:
         model = Book
         # fields = ['id', 'title', 'publisher']
         fields = ['id', 'title', 'publisher', 'authors']
-
-    # def get_authors(self, obj):
-    #
-    #     queryset = obj.authors.all()
-    #     s = ""
-    #     for row in queryset:
-    #         s = str(row.name) + ',' + s
-    #     print(s)
-    #     return s[:-1]
 

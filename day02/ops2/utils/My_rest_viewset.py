@@ -56,5 +56,7 @@ class MyViewBase(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        return JsonResponse(data=[], code=204, msg="delete resource success", status=status.HTTP_204_NO_CONTENT)
+        # return JsonResponse(data=[], code=204, msg="delete resource success", status=status.HTTP_204_NO_CONTENT)
+        # 删除 HTTP_204_NO_CONTENT 游览器会自动过滤，修改成200
+        return JsonResponse(data=[], code=204, msg="delete resource success", status=status.HTTP_200_OK)
 

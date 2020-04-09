@@ -9,7 +9,7 @@ class MyPagePagination(PageNumberPagination):
     """
 
     # 每页显示的个数
-    page_size = 2
+    page_size = 4
     # 可以动态改变每页显示的个数
     page_size_query_param = 'rows'
     # 页码参数
