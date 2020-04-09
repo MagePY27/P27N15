@@ -10,7 +10,7 @@
 
 - 效果
 ![image](https://github.com/MagePY27/P27N15/blob/master/img/day3-book.png)
-![image](https://github.com/MagePY27/P27N15/blob/master/img/day3-publish-crate.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/day3-publish-create.png)
 
 #### 设置docs
 - setting
