@@ -1,3 +1,10 @@
+### celery 基础
+> 请查看
+https://github.com/MagePY27/P27N15/blob/master/day02/celery.md
+
+
+
+
 ### day 3 drf
 > 使用drf实现后端
 > 参考增加了restful的 response, viewset 功能,方便前端调用
