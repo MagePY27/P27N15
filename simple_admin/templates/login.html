@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from coderthemes.com/velonic_3.0/admin_3/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 29 May 2016 14:53:39 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <title>Login</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-reset.css" rel="stylesheet">
+
+    <!--Animation css-->
+    <link href="/static/css/animate.css" rel="stylesheet">
+
+    <!--Icon-fonts css-->
+    <link href="/static/plugins/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+    <link href="/static/plugins/ionicon/css/ionicons.min.css" rel="stylesheet"/>
+
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/helper.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/plugins/jquery-confirm/jquery-confirm.min.css">
+
+    <style type="text/css">
+        .text-red {
+            color: red
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="wrapper-page animated fadeInDown">
+    <div class="panel panel-color panel-primary">
+        <div class="panel-heading">
+            <h3 class="text-center m-t-10"><strong>Login</strong></h3>
+        </div>
+
+        <form class="form-horizontal m-t-40" action="" method="post">{% csrf_token %}
+
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <input class="form-control" type="text" placeholder="Username" name="username">
+                </div>
+            </div>
+            <div class="form-group ">
+
+                <div class="col-xs-12">
+                    <input class="form-control" type="password" placeholder="Password" name="password">
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <label class="cr-styled">
+                        <input type="checkbox" checked>
+                        <i class="fa"></i>
+                        Remember me
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group text-right">
+                <div class="col-xs-12">
+                    <button class="btn btn-purple w-md" type="submit">Log In</button>
+                </div>
+            </div>
+            {#            <div class="form-group m-t-30">#}
+            {#                <div class="col-sm-7">#}
+            {#                    <a href="recoverpw.html"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>#}
+            {#                </div>#}
+            {#            </div>#}
+        </form>
+        {% if msg %} <!--判断如果后端返回用户验证错误信息,前端页面输出错误信息-->
+            <p class="text-red">{{ msg }}</p>
+        {% endif %}
+    </div>
+</div>
+
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<!--common script for all pages-->
+<script src="/static/js/jquery.app.js"></script>
+<script src="/static/plugins/jquery-confirm/jquery-confirm.min.js"></script>
+
+
+</body>
+
+
+</html>
