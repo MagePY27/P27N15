@@ -4,15 +4,15 @@
 
 #### 效果
 - 登录
-![image](https://github.com/MagePY27/P27N15/blob/master/img/simpl-01.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/simple-01.png)
 - 用户管理页
-![image](https://github.com/MagePY27/P27N15/blob/master/img/simpl-02.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/simple-02.png)
 - 新增
-![image](https://github.com/MagePY27/P27N15/blob/master/img/simpl-03.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/simple-03.png)
 - 编辑
-![image](https://github.com/MagePY27/P27N15/blob/master/img/simpl-04.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/simple-04.png)
 - xadmin
-![image](https://github.com/MagePY27/P27N15/blob/master/img/simpl-05.png)
+![image](https://github.com/MagePY27/P27N15/blob/master/img/simple-05.png)
 
 
 ##### xadmin 安装
