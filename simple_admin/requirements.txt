@@ -9,5 +9,5 @@ paramiko
 dwebsocket
 django-filter
 celery==4.3.0
-ansible==2.7.10
+ansible==7.0.0
 redis==3.2.1
